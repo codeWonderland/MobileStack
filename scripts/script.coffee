@@ -1,6 +1,12 @@
 $container = $('.photo-container')[0]
 
 $(document).ready ->
+  $container.innerHTML = '<p class="end-text">Oh hey, you\'ve gone <br /> through \'em all</p><a class="btn center-btn" onclick="initStack()">Start Over</a>'
+  initStack()
+  
+  return
+
+@initStack = () ->
   $src = $('.album-src')[0]
   data = $src.getElementsByClassName('src')
   cnt = 0
@@ -11,7 +17,7 @@ $(document).ready ->
     $image = resizeCenterImage($image)
     # $($image).attr('onclick', datum.getAttribute('onclick'))
     $container.append($image)
-  
+    
     r		= Math.floor(Math.random()*41)-20
     if cnt < data.length
       $($image).css({
@@ -21,43 +27,38 @@ $(document).ready ->
       })
   
   initHammer(photo) for photo in document.getElementsByClassName('photo-container')[0].getElementsByTagName('img')
-  
   return
-
+  
 @initHammer = (el) ->
   mc = new Hammer.Manager(el)
   mc.add( new Hammer.Pan() )
-  mc.on 'pan', nextPhoto
+  mc.on 'pan', checkTime
+  return
+
+@checkTime = () ->
+  if (new Date() / 1000) > (localStorage.getItem("lastSwipe") + 1)
+    nextPhoto()
   return
   
 @nextPhoto = () ->
+  localStorage.setItem("lastSwipe", new Date() / 1000)
   $current 	= $($('.photo-container')[0]).find('img:last')
-  r			= Math.floor(Math.random()*41)-20
-  
-  currentPositions = {
-    marginLeft	: -($current[0].height/2)-50+'px',
-    marginTop	: -($current[0].height/2)-20+'px'
-  }
-  
   $new_current = $current.prev()
-  
   $current.animate {
     'marginLeft': '250px'
     'marginTop': '-385px'
-  }, 250, ->
-    $(this).insertBefore($($('.photo-container')[0]).find('img:first')).css(
-      '-moz-transform': 'rotate(' + r + 'deg)'
-      '-webkit-transform': 'rotate(' + r + 'deg)'
-      'transform': 'rotate(' + r + 'deg)').animate {
-      'marginLeft': currentPositions.marginLeft
-      'marginTop': currentPositions.marginTop
-      }, 250, ->
-        $new_current.css(
-          '-moz-transform': 'rotate(0deg)'
-          '-webkit-transform': 'rotate(0deg)'
-          'transform': 'rotate(0deg)')
-        return
-    return
+  }, 1000
+  
+  $new_current.css(
+    '-moz-transform': 'rotate(0deg)'
+    '-webkit-transform': 'rotate(0deg)'
+    'transform': 'rotate(0deg)')
+  
+  setTimeout(removeLast, 1500)
+  return
+  
+@removeLast = () ->
+  $('.photo-container').children().last().remove()
   return
   
 @resizeCenterImage = ($image) ->

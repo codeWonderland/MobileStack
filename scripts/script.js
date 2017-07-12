@@ -5,6 +5,11 @@
   $container = $('.photo-container')[0];
 
   $(document).ready(function() {
+    $container.innerHTML = '<p class="end-text">Oh hey, you\'ve gone <br /> through \'em all</p><a class="btn center-btn" onclick="initStack()">Start Over</a>';
+    initStack();
+  });
+
+  this.initStack = function() {
     var $image, $src, cnt, data, datum, i, j, len, len1, photo, r, ref;
     $src = $('.album-src')[0];
     data = $src.getElementsByClassName('src');
@@ -30,43 +35,40 @@
       photo = ref[j];
       initHammer(photo);
     }
-  });
+  };
 
   this.initHammer = function(el) {
     var mc;
     mc = new Hammer.Manager(el);
     mc.add(new Hammer.Pan());
-    mc.on('pan', nextPhoto);
+    mc.on('pan', checkTime);
+  };
+
+  this.checkTime = function() {
+    if ((new Date() / 1000) > (localStorage.getItem("lastSwipe") + 1)) {
+      nextPhoto();
+    }
   };
 
   this.nextPhoto = function() {
-    var $current, $new_current, currentPositions, r;
+    var $current, $new_current;
+    localStorage.setItem("lastSwipe", new Date() / 1000);
     $current = $($('.photo-container')[0]).find('img:last');
-    r = Math.floor(Math.random() * 41) - 20;
-    currentPositions = {
-      marginLeft: -($current[0].height / 2) - 50 + 'px',
-      marginTop: -($current[0].height / 2) - 20 + 'px'
-    };
     $new_current = $current.prev();
     $current.animate({
       'marginLeft': '250px',
       'marginTop': '-385px'
-    }, 250, function() {
-      $(this).insertBefore($($('.photo-container')[0]).find('img:first')).css({
-        '-moz-transform': 'rotate(' + r + 'deg)',
-        '-webkit-transform': 'rotate(' + r + 'deg)',
-        'transform': 'rotate(' + r + 'deg)'
-      }).animate({
-        'marginLeft': currentPositions.marginLeft,
-        'marginTop': currentPositions.marginTop
-      }, 250, function() {
-        $new_current.css({
-          '-moz-transform': 'rotate(0deg)',
-          '-webkit-transform': 'rotate(0deg)',
-          'transform': 'rotate(0deg)'
-        });
-      });
+    }, 1000);
+    $new_current.css({
+      '-moz-transform': 'rotate(0deg)',
+      '-webkit-transform': 'rotate(0deg)',
+      'transform': 'rotate(0deg)'
     });
+    setTimeout(removeLast, 1500);
+  };
+
+  this.removeLast = function() {
+    $('.photo-container').children().last().remove();
   };
 
   this.resizeCenterImage = function($image) {

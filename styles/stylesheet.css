@@ -6,7 +6,6 @@
   z-index: 100;
   position: relative; }
   .photo-container img {
-    border: 10px solid #fff;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -26,5 +25,14 @@
 
 .album-src {
   display: none; }
+
+.end-text {
+  font-size: 1.3em;
+  text-align: center; }
+
+a.btn.center-btn {
+  margin-left: 34%;
+  width: 23%;
+  margin-right: 34%; }
 
 /*# sourceMappingURL=stylesheet.css.map */
