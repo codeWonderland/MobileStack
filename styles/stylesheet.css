@@ -1,0 +1,30 @@
+.photo-container {
+  width: 280px;
+  height: 200px;
+  margin: auto;
+  margin-top: 50px;
+  z-index: 100;
+  position: relative; }
+  .photo-container img {
+    border: 10px solid #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-box-shadow: 1px 1px 10px #000;
+    -webkit-box-shadow: 1px 1px 10px #000;
+    box-shadow: 1px 1px 10px #000; }
+
+.loading {
+  background: #121212 url(../Images/ace/loading.gif) no-repeat 50% 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70); }
+
+.album-src {
+  display: none; }
+
+/*# sourceMappingURL=stylesheet.css.map */
