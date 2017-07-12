@@ -41,18 +41,11 @@
     var mc;
     mc = new Hammer.Manager(el);
     mc.add(new Hammer.Pan());
-    mc.on('pan', checkTime);
-  };
-
-  this.checkTime = function() {
-    if ((new Date() / 1000) > (localStorage.getItem("lastSwipe") + 1)) {
-      nextPhoto();
-    }
+    mc.on('pan', nextPhoto);
   };
 
   this.nextPhoto = function() {
     var $current, $new_current;
-    localStorage.setItem("lastSwipe", new Date() / 1000);
     $current = $($('.photo-container')[0]).find('img:last');
     $new_current = $current.prev();
     $current.animate({

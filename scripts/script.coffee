@@ -32,16 +32,10 @@ $(document).ready ->
 @initHammer = (el) ->
   mc = new Hammer.Manager(el)
   mc.add( new Hammer.Pan() )
-  mc.on 'pan', checkTime
-  return
-
-@checkTime = () ->
-  if (new Date() / 1000) > (localStorage.getItem("lastSwipe") + 1)
-    nextPhoto()
+  mc.on 'pan', nextPhoto
   return
   
 @nextPhoto = () ->
-  localStorage.setItem("lastSwipe", new Date() / 1000)
   $current 	= $($('.photo-container')[0]).find('img:last')
   $new_current = $current.prev()
   $current.animate {
