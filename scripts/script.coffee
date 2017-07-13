@@ -31,8 +31,8 @@ $(document).ready ->
   
 @initHammer = (el) ->
   mc = new Hammer.Manager(el)
-  mc.add( new Hammer.Pan() )
-  mc.on 'pan', nextPhoto
+  mc.add( new Hammer.Swipe() )
+  mc.on 'swipe', nextPhoto
   return
   
 @nextPhoto = () ->
@@ -48,11 +48,11 @@ $(document).ready ->
     '-webkit-transform': 'rotate(0deg)'
     'transform': 'rotate(0deg)')
   
-  setTimeout(removeLast, 1500)
+  setTimeout(removeLast, 1100)
   return
   
 @removeLast = () ->
-  $('.photo-container').children().last().remove()
+  $($('.photo-container')[0]).find('img:last').remove()
   return
   
 @resizeCenterImage = ($image) ->
