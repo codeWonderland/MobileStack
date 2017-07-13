@@ -9,6 +9,7 @@ $(document).ready ->
 @initStack = () ->
   $src = $('.album-src')[0]
   data = $src.getElementsByClassName('src')
+  data = reverseArray(data)
   cnt = 0
   for datum in data
     $image = new Image()
@@ -28,6 +29,15 @@ $(document).ready ->
   
   initHammer(photo) for photo in document.getElementsByClassName('photo-container')[0].getElementsByTagName('img')
   return
+ 
+@reverseArray = (array) ->
+  i = array.length
+  temp = []
+  while i >= 0
+    temp.push(array[i])
+    i--
+  temp.shift()
+  return temp
   
 @initHammer = (el) ->
   mc = new Hammer.Manager(el)
