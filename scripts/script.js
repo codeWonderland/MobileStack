@@ -20,6 +20,7 @@
       $image.src = datum.innerHTML;
       ++cnt;
       $image = resizeCenterImage($image);
+      $($image).attr('onclick', datum.getAttribute('onclick'));
       $container.append($image);
       r = Math.floor(Math.random() * 41) - 20;
       if (cnt < data.length) {

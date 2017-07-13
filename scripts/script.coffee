@@ -15,7 +15,7 @@ $(document).ready ->
     $image.src = datum.innerHTML
     ++cnt
     $image = resizeCenterImage($image)
-    # $($image).attr('onclick', datum.getAttribute('onclick'))
+    $($image).attr('onclick', datum.getAttribute('onclick'))
     $container.append($image)
     
     r		= Math.floor(Math.random()*41)-20
