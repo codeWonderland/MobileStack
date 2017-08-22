@@ -1,19 +1,33 @@
+mq = window.matchMedia( "(max-width: 768px)" )
 $container = $('.photo-container')[0]
 
 $(document).ready ->
-  $container.innerHTML = '<p class="end-text">Oh hey, you\'ve gone <br /> through \'em all</p><a class="btn center-btn" onclick="initStack()">Start Over</a>'
-  initStack()
+  if sessionStorage.getItem("photoIndex") is null
+    sessionStorage.setItem("photoIndex", 0)
+  $container.innerHTML = '<p class="end-text">Oh hey, you\'ve gone <br /> through \'em all</p><a class="btn center-btn" onclick="refreshStack()">Start Over</a>'
+  initStack(parseInt(sessionStorage.getItem("photoIndex")))
+  i = 0
+  while i < parseInt(sessionStorage.getItem("photoIndex"))
+    removeLast()
+    i++
   
+  $($('.photo-container')[0]).find('img:last').animate(
+    '-moz-transform': 'rotate(0deg)'
+    '-webkit-transform': 'rotate(0deg)'
+    'transform': 'rotate(0deg)')
   return
 
-@initStack = () ->
+@refreshStack = () ->
+  sessionStorage.setItem("photoIndex", 0)
+  initStack(0)
+
+@initStack = (n) ->
   $src = $('.album-src')[0]
-  data = $src.getElementsByClassName('src')
-  data = reverseArray(data)
+  data = reverseArray($src.getElementsByTagName('img'))
   cnt = 0
   for datum in data
     $image = new Image()
-    $image.src = datum.innerHTML
+    $image.src = datum.getAttribute('src')
     ++cnt
     $image = resizeCenterImage($image)
     $($image).attr('onclick', datum.getAttribute('onclick'))
@@ -29,7 +43,7 @@ $(document).ready ->
   
   initHammer(photo) for photo in document.getElementsByClassName('photo-container')[0].getElementsByTagName('img')
   return
- 
+
 @reverseArray = (array) ->
   i = array.length
   temp = []
@@ -38,41 +52,43 @@ $(document).ready ->
     i--
   temp.shift()
   return temp
-  
+
 @initHammer = (el) ->
   mc = new Hammer.Manager(el)
   mc.add( new Hammer.Swipe() )
-  mc.on 'swipe', nextPhoto
+  mc.on 'swiperight', nextPhoto
   return
-  
+
 @nextPhoto = () ->
+  nextIndex = parseInt(sessionStorage.getItem("photoIndex")) + 1
+  sessionStorage.setItem("photoIndex", nextIndex)
   $current 	= $($('.photo-container')[0]).find('img:last')
   $new_current = $current.prev()
   $current.animate {
     'marginLeft': '250px'
     'marginTop': '-385px'
-  }, 1000
+  }, 500
   
   $new_current.css(
     '-moz-transform': 'rotate(0deg)'
     '-webkit-transform': 'rotate(0deg)'
     'transform': 'rotate(0deg)')
   
-  setTimeout(removeLast, 1100)
+  setTimeout(removeLast, 600)
   return
-  
+
 @removeLast = () ->
   $($('.photo-container')[0]).find('img:last').remove()
   return
-  
+
 @resizeCenterImage = ($image) ->
   theImage 	= new Image()
   theImage.src 	= $image.getAttribute("src")
   imgwidth 	= theImage.width
   imgheight 	= theImage.height
   
-  containerwidth  = 260
-  containerheight = 180
+  containerwidth  = 330
+  containerheight = 230
   
   if imgwidth	> containerwidth
     newwidth = containerwidth
@@ -104,7 +120,7 @@ $(document).ready ->
     else
       theImage.width = newwidth
       theImage.height= newheight
-    
+  
   
   $($image).css({
     'width'			:theImage.width,

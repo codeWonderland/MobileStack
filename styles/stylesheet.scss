@@ -1,6 +1,6 @@
 .photo-container{
-  width:280px;
-  height:200px;
+  width:350px;
+  height:250px;
   margin: auto;
   margin-top: 50px;
   z-index:100;
@@ -10,9 +10,9 @@
     position:absolute;
     top:50%;
     left:50%;
-    -moz-box-shadow:1px 1px 10px #000;
-    -webkit-box-shadow:1px 1px 10px #000;
-    box-shadow:1px 1px 10px #000;
+    -moz-box-shadow: -4px 3px 6px 2px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: -4px 3px 6px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: -4px 3px 6px 2px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -48,4 +48,12 @@ a.btn.center-btn {
 
 .ms-sub {
   margin-top: 0;
+}
+
+.dots {
+  margin-top: 20px;
+  height: 30px;
+  width: 100%;
+  background-image: url('https://www.champlain.edu/images/ace/student-stories-dev/dots-01.png');
+  background-repeat: repeat-x;
 }
